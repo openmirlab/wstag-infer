@@ -1,0 +1,13 @@
+WSTAG inference package
+
+Original WSTAG research and model: Xuenan Xu, Ziyang Ma, Mengyue Wu, and Kai Yu.
+Research source: https://github.com/wsntxxn/TextToAudioGrounding (MIT; see LICENSE.UPSTREAM-MIT).
+Pinned author model source: https://huggingface.co/wsntxxn/cnn8rnn-w2vmean-audiocaps-grounding/tree/a9eb20c3e2135e0ca82d747bb99ae10ee4eaec66
+The Hugging Face model card labels that snapshot Apache-2.0. The adapted inference
+implementation in src/wstag_infer/_impl/modeling_wstag.py is from the pinned
+snapshot, with only a local documentation header added. It is not represented
+as a verbatim copy of the different GitHub research-tree file.
+
+OpenMIRLab's own code provides verified asset loading, lifecycle, SoundFile
+decoding, long-file windows, source-clock mapping, and thresholded intervals.
+OpenMIRLab did not train the model. No model weights or vocab files are bundled.
