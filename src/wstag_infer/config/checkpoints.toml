@@ -1,0 +1,17 @@
+[model]
+key = "cnn8rnn-w2vmean-audiocaps"
+repo_id = "wsntxxn/cnn8rnn-w2vmean-audiocaps-grounding"
+revision = "a9eb20c3e2135e0ca82d747bb99ae10ee4eaec66"
+source_repo = "https://github.com/wsntxxn/TextToAudioGrounding"
+source_revision = "40c2280139a9bd077a6c823319d6244f5aa7512d"
+source_file = "hf_modeling_grounding.py"
+snapshot_code_sha256 = "8b88809c2f640ab0d7291b1190786fb81e88b3ddefa38c1a94b004c2d5c1048b"
+checkpoint_url = "https://huggingface.co/wsntxxn/cnn8rnn-w2vmean-audiocaps-grounding"
+checkpoint_license = "Apache-2.0 (model card)"
+source_license = "MIT (GitHub repository)"
+verified_date = "2026-11-13"
+
+[model.files]
+"config.json" = "286b5e7afa9ca3c5ecb85ebaac34f846a70c135518216373adef024e1b5427e7"
+"model.safetensors" = "dd48c8f992c613401d095f486a595e0a495a07dea73581c41d3da9ba2c0fbb7e"
+"vocab.json" = "2c5156bff203c11db22b190da9e87d6562a5278fadde8acced0db45e48ea253c"

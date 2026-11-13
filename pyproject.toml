@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wstag-infer"
+dynamic = ["version"]
+description = "Inference-only weakly supervised text-to-audio grounding"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{name = "Xuenan Xu"}, {name = "Ziyang Ma"}, {name = "Mengyue Wu"}, {name = "Kai Yu"}]
+maintainers = [{name = "openmirlab"}]
+dependencies = [
+  "huggingface-hub>=0.30",
+  "numpy>=1.26",
+  "soundfile>=0.12",
+  "torch>=2.0",
+  # The pinned author model code was verified on 4.57.6; Transformers 5 parity is open.
+  # See docs/compatibility.md. Remove this ceiling after a recorded parity run.
+  "transformers>=4.57.6,<5",
+  "tomli>=2; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+# Torchaudio is compiled and must match the installed Torch binary.
+model = ["torchaudio>=2.0"]
+dev = ["build>=1.3", "pytest>=8", "ruff>=0.8"]
+
+[project.scripts]
+wstag-infer = "wstag_infer.cli:main"
+
+[tool.hatch.version]
+path = "src/wstag_infer/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wstag_infer"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/wstag_infer/config/checkpoints.toml" = "wstag_infer/config/checkpoints.toml"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/", "tests/", "docs/", "README.md", "CLAUDE.md", "CHANGELOG.md", "LICENSE", "LICENSE.UPSTREAM-MIT", "NOTICE", "pyproject.toml", ".gitignore", ".python-version"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["model: loads the actual pinned WSTAG checkpoint"]
+addopts = "-m 'not model'"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = ["src/wstag_infer/_impl/modeling_wstag.py"]
+
+[tool.ruff.lint]
+ignore = ["PYI034"]
