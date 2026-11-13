@@ -8,7 +8,7 @@ Locate a described sound in WAV or FLAC audio with the small WSTAG model.
 
 [WSTAG](https://github.com/wsntxxn/TextToAudioGrounding) produces dense audio–text match scores, but the author's Hugging Face loader fetches its vocabulary without a fixed revision. This inference-only package keeps the author's model implementation locally, verifies the fixed configuration, weights, and vocabulary, and maps scores from overlapping windows to the input-file clock. The original research and model belong to the WSTAG authors.
 
-**Status:** local standalone infer package; no PyPI release or OpenMIRLab remote repository yet. The included model implementation is copied from the author's fixed [Hugging Face snapshot](https://huggingface.co/wsntxxn/cnn8rnn-w2vmean-audiocaps-grounding/tree/a9eb20c3e2135e0ca82d747bb99ae10ee4eaec66), with only a provenance docstring added. The model card declares Apache-2.0; the separate GitHub research tree has an MIT license. See [source provenance](docs/source-provenance.md) and [NOTICE](NOTICE). Checkpoint weights are downloaded to the user's cache and are never bundled.
+**Status:** public inference-only source repository; no PyPI release. The included model implementation is copied from the author's fixed [Hugging Face snapshot](https://huggingface.co/wsntxxn/cnn8rnn-w2vmean-audiocaps-grounding/tree/a9eb20c3e2135e0ca82d747bb99ae10ee4eaec66), with only a provenance docstring added. The model card declares Apache-2.0; the separate GitHub research tree has an MIT license. See [source provenance](docs/source-provenance.md) and [NOTICE](NOTICE). Checkpoint weights are downloaded to the user's cache and are never bundled.
 
 ## Acknowledgments
 
@@ -41,7 +41,13 @@ This package only performs text-to-audio localization with the small `cnn8rnn-w2
 
 ## Install
 
-Python 3.10+ is declared. The recorded CPU parity environment is Python 3.12, Torch 2.15.0, TorchAudio 2.11.1, and Transformers 4.57.6. Python 3.10 has passed an installed-wheel import and metadata check; full model inference has been verified on 3.12. From a local checkout:
+Python 3.10+ is declared. The recorded CPU parity environment is Python 3.12, Torch 2.15.0, TorchAudio 2.11.1, and Transformers 4.57.6. Python 3.10 has passed an installed-wheel import and metadata check; full model inference has been verified on 3.12. Install from public GitHub:
+
+```bash
+uv pip install 'wstag-infer[model] @ git+https://github.com/openmirlab/wstag-infer.git'
+```
+
+For a local development checkout:
 
 ```bash
 uv sync --extra model
@@ -60,7 +66,7 @@ with WSTAGSession(device="cpu") as model:
     print(result.frames)   # nominal 40 ms score bins on the input-file clock
 ```
 
-Run this using `uv run --extra model python example.py`, or call `uv run --extra model wstag-infer recording.wav 'the sound of glass breaking' --threshold 0.5` for JSON. `localize(path, phrases, threshold=...)` provides a one-shot call. For repeated files, reuse a `WSTAGSession`: `load()` loads once, `infer()` requires a ready session, `release()` removes the resident model, and `close()` ends the session. `status` and `cache_info()` expose lifecycle and offline asset state. A session is not safe for concurrent `infer()` calls.
+Run this using `uv run --extra model python example.py` from a checkout, or call `wstag-infer recording.wav 'the sound of glass breaking' --threshold 0.5` for JSON after installation. `localize(path, phrases, threshold=...)` provides a one-shot call. For repeated files, reuse a `WSTAGSession`: `load()` loads once, `infer()` requires a ready session, `release()` removes the resident model, and `close()` ends the session. `status` and `cache_info()` expose lifecycle and offline asset state. A session is not safe for concurrent `infer()` calls. A [Traditional Chinese usage guide](docs/usage.zh-TW.md) includes installation, offline setup, and result interpretation.
 
 ## Usage and output
 
@@ -72,7 +78,7 @@ Text uses the checkpoint's English whitespace-token vocabulary. Unrecognized wor
 
 ## Checkpoint and cache
 
-The pinned revision and SHA-256 values for `config.json`, `model.safetensors`, and `vocab.json` are in [the checkpoint manifest](src/wstag_infer/config/checkpoints.toml). `load()` downloads these files into the Hugging Face cache on first use and verifies all three before constructing the model. `cache_info()` checks the same resolver without downloading. Set `cache_dir=` for a custom Hugging Face cache and `local_files_only=True` to prohibit network access. For a manually prepared directory containing the three verified files, pass `checkpoint_dir=`. A mismatch fails before model construction.
+The pinned revision and SHA-256 values for `config.json`, `model.safetensors`, and `vocab.json` are in [the checkpoint manifest](src/wstag_infer/config/checkpoints.toml). `load()` downloads these files into the Hugging Face cache on first use, normally `~/.cache/huggingface/hub`, and verifies all three before constructing the model. `cache_info()` checks the same resolver without downloading. Set `cache_dir=` for a custom Hugging Face cache and `local_files_only=True` to prohibit network access. For a manually prepared directory containing the three verified files, pass `checkpoint_dir=`. The [usage guide](docs/usage.zh-TW.md#離線使用) gives the exact manual-download command. A mismatch fails before model construction.
 
 The author model code is in the package, so `trust_remote_code` is never needed. `device` accepts `auto`, `cpu`, `cuda`, and `cuda:N`; MPS is currently rejected. `auto` chooses CUDA when available, else CPU.
 
@@ -100,4 +106,4 @@ Package source is Apache-2.0. The copied model implementation comes from the Apa
 
 ## Support
 
-Package issues can be reported to OpenMIRLab once the repository is published. For model or research questions, consult the [original WSTAG repository](https://github.com/wsntxxn/TextToAudioGrounding).
+Report package issues in [openmirlab/wstag-infer issues](https://github.com/openmirlab/wstag-infer/issues). For model or research questions, consult the [original WSTAG repository](https://github.com/wsntxxn/TextToAudioGrounding).
