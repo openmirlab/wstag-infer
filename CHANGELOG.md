@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Gate pushes and pull requests with Python 3.10–3.15 offline tests, lint, and a clean wheel-from-sdist import check; keep real-checkpoint parity separate.
+
 ## 0.1.0 — 2026-11-13
 
 - First inference-only package for the small WSTAG Cnn8Rnn + word-embedding checkpoint.

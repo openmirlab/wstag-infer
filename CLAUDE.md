@@ -29,6 +29,11 @@ CHANGELOG.md for user-visible changes. No weights enter Git or wheels.
 
 Verification from this checkout:
 
+`.github/workflows/ci.yml` gates offline tests and lint on Python 3.10–3.15,
+plus a clean installed-wheel smoke on Python 3.12. It excludes `model` tests
+from default CI because they require the pinned author checkpoint. Run them
+separately for release parity.
+
 ```bash
 uv sync --extra model --extra dev
 uv run --extra model --extra dev pytest -q

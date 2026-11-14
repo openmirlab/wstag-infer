@@ -88,6 +88,11 @@ The wheel contains the pinned inference model implementation, localization adapt
 
 ## Development
 
+GitHub CI runs offline tests (`pytest -m 'not model'`) and lint on Python
+3.10–3.15, then checks a wheel built from its sdist in a clean Python 3.12
+environment. The author-output comparison remains a separate checkpoint-backed
+verification step.
+
 The baseline fixture records the author's direct model output before packaging. Model-marked tests compare real checkpoint scores to that baseline; other tests cover asset integrity, lifecycle, short and long audio mapping, and threshold semantics. Run from the checkout:
 
 ```bash
